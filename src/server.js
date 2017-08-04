@@ -7,8 +7,8 @@ http.createServer(function (req, res) {
 		'Location': '/'
 	};
 
-	var query = url.parse(req.url,true).query;
-	
+	var query = url.parse(req.url, true).query;
+
 	if (query.token) {
 		headers['Set-Cookie'] = 'JSESSIONID=' + query.token + '; Path=/; HttpOnly';
 	}
@@ -21,6 +21,6 @@ http.createServer(function (req, res) {
   } else {
   	res.writeHead(302, headers);
   }
-  
+
   res.end(JSON.stringify(query));
 }).listen(8000);
