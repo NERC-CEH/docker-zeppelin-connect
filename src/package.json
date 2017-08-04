@@ -1,0 +1,14 @@
+{
+  "name": "docker-zeppelin-connect",
+  "version": "1.0.0",
+  "description": "A simple web server to set an HTML session cookie",
+  "main": "server.js",
+  "license": "GPL-3.0",
+  "private": true,
+  "devDependencies": {
+    "nodemon": "1.11.0"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  }
+}
