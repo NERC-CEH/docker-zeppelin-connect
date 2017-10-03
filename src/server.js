@@ -2,12 +2,7 @@ var http = require('http');
 var url = require('url');
 var querystring = require('querystring');
 
-if (!process.env.CONNECT_TYPE) {
-  console.error('No CONNECT_TYPE environment variable set defaulting to ZEPPELIN')
-}
-
-const CONNECT_TYPE = process.env.CONNECT_TYPE || 'ZEPPELIN';
-console.log(`CONNECT_TYPE: ${CONNECT_TYPE}`);
+const CONNECT_TYPE = getConnectType();
 
 http.createServer(function (req, res) {
   if (req.url === '/status' || req.url === '/favicon.ico'){
@@ -41,6 +36,24 @@ function processCookie(req, res) {
     res.writeHead(302, headers);
   }
   res.end(JSON.stringify(query));
+}
+
+function getConnectType() {
+  const CONNECT_TYPES = ['ZEPPELIN', 'RSTUDIO'];
+
+  let connectType = 'ZEPPELIN';
+  if (!process.env.CONNECT_TYPE) {
+    console.error('No CONNECT_TYPE environment variable set defaulting to ZEPPELIN')
+  } else {
+    if (CONNECT_TYPES.includes(process.env.CONNECT_TYPE)) {
+      connectType = process.env.CONNECT_TYPE;
+    } else {
+      console.error(`Unknown CONNECT_TYPE: ${process.env.CONNECT_TYPE} defaulting to ZEPPELIN`);
+    }
+  }
+
+  console.log(`CONNECT_TYPE: ${connectType}`);
+  return connectType;
 }
 
 /**
