@@ -28,8 +28,6 @@ function processCookie(req, res) {
     setRStduioHeaders(headers, query);
   }
 
-  console.log('Response Headers: ');
-  console.log(headers);
   if (query.noredirect) {
     res.writeHead(200, headers);
   } else {
@@ -74,8 +72,8 @@ function setZeppelinHeaders(headers, query) {
  */
 function setRStduioHeaders(headers, query) {
   const cookies = [];
-  if (query.expires && query.token) {
-    var cookie = `rstudio|${querystring.escape(query.expires)}|${querystring.escape(query.token)}`;
+  if (query.username && query.expires && query.token) {
+    var cookie = `${query.username}|${querystring.escape(query.expires)}|${querystring.escape(query.token)}`;
     cookies.push('user-id=' + cookie + '; Path=/; HttpOnly');
   }
 
