@@ -25,7 +25,7 @@ describe('server', () => {
         token: 'token',
         csrfToken: 'csrf',
       };
-      connectServer.setRStduioHeaders(headers, query);
+      connectServer.setRStudioHeaders(headers, query);
       expect(headers).toEqual({ 'Set-Cookie': [
         'user-id=username|expires|token; Path=/; HttpOnly',
         'csrf-token=csrf; Path=/',
@@ -37,14 +37,14 @@ describe('server', () => {
     it('processes RStudio cookie', () => {
       const req = new MockReq({
         method: 'GET',
-        url: '/?username=username&expires=expires&token=token&csrfToken=csrf',
+        url: '/path/connect?username=username&expires=expires&token=token&csrfToken=csrf',
       });
       const res = new MockRes();
       connectServer.processCookie(req, res);
       expect(res.statusCode).toEqual(302);
       expect(res.statusMessage).toEqual('Found');
       expect(res.getHeaders()).toEqual({
-        location: '/',
+        location: '/path/',
         'set-cookie': [
           'user-id=username|expires|token; Path=/; HttpOnly',
           'csrf-token=csrf; Path=/',

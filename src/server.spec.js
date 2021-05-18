@@ -19,4 +19,13 @@ describe('server', () => {
       expect(res._getJSON()).toEqual({ message: 'OK' }); // eslint-disable-line no-underscore-dangle
     });
   });
+
+  describe('redirectUrl', () => {
+    it('handles different urls', () => {
+      expect(connectServer.redirectLocation('?token=token')).toEqual('/');
+      expect(connectServer.redirectLocation('/?token=token')).toEqual('/');
+      expect(connectServer.redirectLocation('/connect?token=token')).toEqual('/');
+      expect(connectServer.redirectLocation('/some/path/connect?token=token')).toEqual('/some/path/');
+    });
+  });
 });

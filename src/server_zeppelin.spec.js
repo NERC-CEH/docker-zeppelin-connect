@@ -31,7 +31,7 @@ describe('server', () => {
     it('processes Zeppelin cookie', () => {
       const req = new MockReq({
         method: 'GET',
-        url: '/?username=username&expires=expires&token=token',
+        url: '/?token=token',
       });
       const res = new MockRes();
       connectServer.processCookie(req, res);
@@ -42,8 +42,6 @@ describe('server', () => {
         'set-cookie': 'JSESSIONID=token; Path=/; HttpOnly',
       });
       expect(res._getJSON()).toEqual({ // eslint-disable-line no-underscore-dangle
-        username: 'username',
-        expires: 'expires',
         token: 'token',
       });
     });

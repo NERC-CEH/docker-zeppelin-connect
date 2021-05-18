@@ -19,13 +19,13 @@ function status(req, res) {
 
 function processCookie(req, res) {
   console.log(`Request URL: ${req.url}`);
-  const headers = { Location: '/' };
+  const headers = { Location: redirectLocation(req.url) };
   const { query } = url.parse(req.url, true);
 
   if (CONNECT_TYPE === 'ZEPPELIN') {
     setZeppelinHeaders(headers, query);
   } else if (CONNECT_TYPE === 'RSTUDIO') {
-    setRStduioHeaders(headers, query);
+    setRStudioHeaders(headers, query);
   }
 
   if (query.noredirect) {
@@ -34,6 +34,11 @@ function processCookie(req, res) {
     res.writeHead(302, headers);
   }
   res.end(JSON.stringify(query));
+}
+
+function redirectLocation(urlPath) {
+  const newUrl = new url.URL('./', `http://ignored-host.com${urlPath}`);
+  return newUrl.pathname;
 }
 
 function getConnectType() {
@@ -53,22 +58,22 @@ function getConnectType() {
 }
 
 /**
- * Funtion to set the Zeppelin cookie - JSESSIONID
+ * Function to set the Zeppelin cookie - JSESSIONID
  * The value is retrieved from the token query string parameter
  */
 function setZeppelinHeaders(headers, query) {
   if (query.token) {
-    headers['Set-Cookie'] = `JSESSIONID=${query.token}; Path=/; HttpOnly`;
+    headers['Set-Cookie'] = `JSESSIONID=${query.token}; Path=/; HttpOnly`; // eslint-disable-line no-param-reassign
   }
 }
 
 /**
  * Set the two RStudio cookies - user-id and csrf-token
- * The structure of the user-id cookie is rstudio|<exipry_date>|<token> where the last two values are
+ * The structure of the user-id cookie is <username>|<expiry_date>|<token> where the last two values are
  * url encoded. The values are retrieved from the expires and token query string parameters.
  * Note that the 'Set-Cookie' header is an array of cookies.
  */
-function setRStduioHeaders(headers, query) {
+function setRStudioHeaders(headers, query) {
   const cookies = [];
   if (query.username && query.expires && query.token) {
     const cookie = `${query.username}|${querystring.escape(query.expires)}|${querystring.escape(query.token)}`;
@@ -78,7 +83,7 @@ function setRStduioHeaders(headers, query) {
   if (query.csrfToken) {
     cookies.push(`csrf-token=${query.csrfToken}; Path=/`);
   }
-  headers['Set-Cookie'] = cookies;
+  headers['Set-Cookie'] = cookies; // eslint-disable-line no-param-reassign
 }
 
-module.exports = { status, getConnectType, setZeppelinHeaders, setRStduioHeaders, processCookie };
+module.exports = { status, getConnectType, setZeppelinHeaders, setRStudioHeaders, processCookie, redirectLocation };
