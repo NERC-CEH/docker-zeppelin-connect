@@ -1,6 +1,6 @@
 FROM node:8.2.1-alpine
 
-LABEL maintainer "gareth.lloyd@stfc.ac.uk"
+LABEL maintainer="gareth.lloyd@stfc.ac.uk"
 
 RUN mkdir -p /usr/src/
 

@@ -5,10 +5,18 @@
   "main": "server.js",
   "license": "GPL-3.0",
   "private": true,
+  "type": "commonjs",
   "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "mock-req": "^0.2.0",
+    "mock-res": "^0.5.0",
     "nodemon": "1.11.0"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "jest --watch"
   }
 }

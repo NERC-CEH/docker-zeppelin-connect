@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "src"
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"orta.vscode-jest",
+			"firsttris.vscode-jest-runner",
+			"streetsidesoftware.code-spell-checker",
+		]
+	},
+	"settings": {
+		"editor.formatOnSave": false,
+		"editor.tabSize": 2,
+		"[JavaScript]": {
+			"editor.formatOnSave": true,
+	  },
+		"editor.codeActionsOnSave": {
+			"source.fixAll": true
+		},
+		"jest.disabledWorkspaceFolders": [
+			"docker-zeppelin-connect"
+		],
+		"jestrunner.jestCommand": "npm run test --",
+		"cSpell.language": "en-gb",
+		"cSpell.words": [
+			"csrf",
+			"jsessionid",
+			"nerc",
+			"noredirect",
+			"rstudio"
+		]
+	}
+}
