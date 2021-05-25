@@ -25,10 +25,11 @@ describe('server', () => {
         token: 'token',
         csrfToken: 'csrf',
       };
-      connectServer.setRStudioHeaders(headers, query);
+      const path = '/some/path/';
+      connectServer.setRStudioHeaders(headers, query, path);
       expect(headers).toEqual({ 'Set-Cookie': [
-        'user-id=username|expires|token; Path=/; HttpOnly',
-        'csrf-token=csrf; Path=/',
+        'user-id=username|expires|token; Path=/some/path/; HttpOnly',
+        'csrf-token=csrf; Path=/some/path/',
       ] });
     });
   });
@@ -46,8 +47,8 @@ describe('server', () => {
       expect(res.getHeaders()).toEqual({
         location: '/path/',
         'set-cookie': [
-          'user-id=username|expires|token; Path=/; HttpOnly',
-          'csrf-token=csrf; Path=/',
+          'user-id=username|expires|token; Path=/path/; HttpOnly',
+          'csrf-token=csrf; Path=/path/',
         ],
       });
       expect(res._getJSON()).toEqual({ // eslint-disable-line no-underscore-dangle

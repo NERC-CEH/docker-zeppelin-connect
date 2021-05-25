@@ -19,13 +19,14 @@ function status(req, res) {
 
 function processCookie(req, res) {
   console.log(`Request URL: ${req.url}`);
-  const headers = { Location: redirectLocation(req.url) };
+  const path = basePath(req.url);
+  const headers = { Location: path };
   const { query } = url.parse(req.url, true);
 
   if (CONNECT_TYPE === 'ZEPPELIN') {
     setZeppelinHeaders(headers, query);
   } else if (CONNECT_TYPE === 'RSTUDIO') {
-    setRStudioHeaders(headers, query);
+    setRStudioHeaders(headers, query, path);
   }
 
   if (query.noredirect) {
@@ -36,7 +37,7 @@ function processCookie(req, res) {
   res.end(JSON.stringify(query));
 }
 
-function redirectLocation(urlPath) {
+function basePath(urlPath) {
   const newUrl = new url.URL('./', `http://ignored-host.com${urlPath}`);
   return newUrl.pathname;
 }
@@ -73,17 +74,17 @@ function setZeppelinHeaders(headers, query) {
  * url encoded. The values are retrieved from the expires and token query string parameters.
  * Note that the 'Set-Cookie' header is an array of cookies.
  */
-function setRStudioHeaders(headers, query) {
+function setRStudioHeaders(headers, query, path) {
   const cookies = [];
   if (query.username && query.expires && query.token) {
     const cookie = `${query.username}|${querystring.escape(query.expires)}|${querystring.escape(query.token)}`;
-    cookies.push(`user-id=${cookie}; Path=/; HttpOnly`);
+    cookies.push(`user-id=${cookie}; Path=${path}; HttpOnly`);
   }
 
   if (query.csrfToken) {
-    cookies.push(`csrf-token=${query.csrfToken}; Path=/`);
+    cookies.push(`csrf-token=${query.csrfToken}; Path=${path}`);
   }
   headers['Set-Cookie'] = cookies; // eslint-disable-line no-param-reassign
 }
 
-module.exports = { status, getConnectType, setZeppelinHeaders, setRStudioHeaders, processCookie, redirectLocation };
+module.exports = { status, getConnectType, setZeppelinHeaders, setRStudioHeaders, processCookie, basePath };
