@@ -20,12 +20,12 @@ describe('server', () => {
     });
   });
 
-  describe('redirectUrl', () => {
+  describe('basePath', () => {
     it('handles different urls', () => {
-      expect(connectServer.redirectLocation('?token=token')).toEqual('/');
-      expect(connectServer.redirectLocation('/?token=token')).toEqual('/');
-      expect(connectServer.redirectLocation('/connect?token=token')).toEqual('/');
-      expect(connectServer.redirectLocation('/some/path/connect?token=token')).toEqual('/some/path/');
+      expect(connectServer.basePath('?token=token')).toEqual('/');
+      expect(connectServer.basePath('/?token=token')).toEqual('/');
+      expect(connectServer.basePath('/connect?token=token')).toEqual('/');
+      expect(connectServer.basePath('/some/path/connect?token=token')).toEqual('/some/path/');
     });
   });
 });
